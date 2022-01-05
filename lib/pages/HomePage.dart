@@ -12,7 +12,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        child: Text("Teste"),),
+        child: Text("Teste"),
+      ),
     );
   }
 }
