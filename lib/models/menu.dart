@@ -7,8 +7,8 @@ class Menu {
     return Menu(
         categories: json['cardapio'] != null
             ? List<Category>.from((json['cardapio'] as Iterable<dynamic>)
-                .map<dynamic>((dynamic o) =>
-                    Category.fromJson(o as Map<String, dynamic>)))
+                .map<dynamic>((dynamic obj) =>
+                    Category.fromJson(obj)))
             : null);
   }
 
@@ -25,13 +25,13 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-        id: json['id'] as String?,
-        desc: json['desc'] as String?,
-        time: json['hora'] as String?,
+        id: json['id'].toString(),
+        desc: json['desc'].toString(),
+        time: json['hora'].toString(),
         products: json['produtos'] != null
-            ? List<MenuItem>.from((json['aListOfObjects'] as Iterable<dynamic>)
-                .map<dynamic>((dynamic o) =>
-                    MenuItem.fromJson(o as Map<String, dynamic>)))
+            ? List<MenuItem>.from((json['produtos'] as Iterable<dynamic>)
+                .map<dynamic>((dynamic obj) =>
+                    MenuItem.fromJson(obj)))
             : null);
   }
 
@@ -41,14 +41,14 @@ class Category {
 
 class MenuItem {
   final String? id;
-  final int? adic;
-  final int? idP;
+  final String? adic;
+  final String? idP;
   final String? desc;
   final String? descr;
-  final double? val;
-  final int? aPar;
+  final String? val;
+  final String? aPar;
   final String? ft;
-  final String? thumb;
+  final List<String>? thumb;
 
   MenuItem(
       {this.id,
@@ -63,15 +63,15 @@ class MenuItem {
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
     return MenuItem(
-        id: json['id'] as String?,
-        adic: json['adic'] as int?,
-        idP: json['idP'] as int?,
-        desc: json['desc'] as String?,
-        descr: json['descr'] as String?,
-        val: json['val'] as double?,
-        aPar: json['aPar'] as int?,
-        ft: json['ft'] as String?,
-        thumb: json['thumb'] as String?);
+        id: json['id'].toString(),
+        adic: json['adic'].toString(),
+        idP: json['idP'].toString(),
+        desc: json['desc'].toString(),
+        descr: json['descr'].toString(),
+        val: json['val'].toString(),
+        aPar: json['aPar'].toString(),
+        ft: json['ft'].toString(),
+        thumb: new List<String>.from(json['thumb']));
   }
 
   Map<String, dynamic> toJson() => {

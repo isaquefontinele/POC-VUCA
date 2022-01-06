@@ -8,7 +8,7 @@ class MenuResponse {
 
   MenuResponse.fromJson(Map<String, dynamic> json)
       : success = json['success'] as bool,
-        menu = Menu.fromJson(json['cardapio']);
+        menu = Menu.fromJson(json);
 
   Map<String, dynamic> toJson() =>
       {'success': success, 'cardapio': menu.toJson()};
