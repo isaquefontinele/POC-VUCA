@@ -25,23 +25,50 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Center(
-            child: Expanded(
-              child: SizedBox (
-                width: 200,
-                child: Container(
-                  color: Colors.amber,
-                  child: ListView.builder(
-                    itemCount: mainMenu!= null ? mainMenu!.categories!.length : 0,
-                    itemBuilder: (context, i) {
-                      return ListTile(
-                        title: Text("${mainMenu!.categories![i].desc}"),
-                      );
-                    },
+          body: Container(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        SizedBox (
+                          width: 200,
+                          child: Container(
+                            color: Colors.amber,
+                            child: ListView.builder(
+                              itemCount: mainMenu!= null ? mainMenu!.categories!.length : 0,
+                              itemBuilder: (context, i) {
+                                return ListTile(
+                                  title: Text("${mainMenu!.categories![i].desc}"),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        VerticalDivider(width: 1, thickness: 1, color: Colors.black),
+                        Expanded(
+                          child: Column(children: [
+                            Container(
+                              height: 200,
+                              color: Colors.red,
+                            ),
+                            Divider(height: 1, thickness: 1, color: Colors.black),
+                            Expanded(
+                              child: Container(
+                                height: MediaQuery.of(context).size.height,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],),
+                        )
+                      ],
+                    )
                   ),
-                ),
-              )
-            )
+                ],
+              ),
+            ),
           )
       ),
     );
