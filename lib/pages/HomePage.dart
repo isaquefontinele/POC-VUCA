@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:poc_vuca/components/loadingDialog.dart';
 import 'package:poc_vuca/models/menu.dart';
 import 'package:poc_vuca/webservices/vuca/getMenu.dart';
 
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         color: Colors.white,
         child: Text(
-          mainMenu!.categories![0].desc!,
+          mainMenu != null ? mainMenu!.categories![0].desc! : "TESTE",
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600, fontSize: 30),
@@ -36,10 +37,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void loadMenu() {
-    GetMenuService().getFullMenu().then((menu) => {
+    Future.delayed(Duration.zero, () {
+      LoadingDialog.show(context);
+    });
+    GetMenuService().getFullMenu().then((menu) {
+      Navigator.pop(context);
       setState(() {
         mainMenu = menu;
-      })
+      });
     });
   }
 }
