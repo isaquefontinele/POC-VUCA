@@ -24,14 +24,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: Text(
-          mainMenu != null ? mainMenu!.categories![0].desc! : "TESTE",
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600, fontSize: 30),
-        )
+      child: Scaffold(
+          body: Center(
+            child: Expanded(
+              child: SizedBox (
+                width: 200,
+                child: Container(
+                  color: Colors.amber,
+                  child: ListView.builder(
+                    itemCount: mainMenu!= null ? mainMenu!.categories!.length : 0,
+                    itemBuilder: (context, i) {
+                      return ListTile(
+                        title: Text("${mainMenu!.categories![i].desc}"),
+                      );
+                    },
+                  ),
+                ),
+              )
+            )
+          )
       ),
     );
   }
