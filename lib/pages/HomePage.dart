@@ -33,34 +33,15 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: Row(
                       children: [
-                        SizedBox (
-                          width: 200,
-                          child: Container(
-                            color: Colors.amber,
-                            child: ListView.builder(
-                              itemCount: mainMenu!= null ? mainMenu!.categories!.length : 0,
-                              itemBuilder: (context, i) {
-                                return ListTile(
-                                  title: Text("${mainMenu!.categories![i].desc}"),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        VerticalDivider(width: 1, thickness: 1, color: Colors.black),
                         Expanded(
                           child: Column(children: [
-                            Container(
-                              height: 200,
-                              color: Colors.red,
-                            ),
+                            Column(
+                              children: [
+                                banner(),
+                                categoriesList()
+                            ],),
                             Divider(height: 1, thickness: 1, color: Colors.black),
-                            Expanded(
-                              child: Container(
-                                height: MediaQuery.of(context).size.height,
-                                color: Colors.blue,
-                              ),
-                            ),
+                            homeMenu(),
                           ],),
                         )
                       ],
@@ -84,5 +65,70 @@ class _HomePageState extends State<HomePage> {
         mainMenu = menu;
       });
     });
+  }
+
+  Widget categoriesList() {
+    return Container(
+      height: 60,
+      color: Colors.red,
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: mainMenu!= null ? mainMenu!.categories!.length : 0,
+          itemBuilder: (context, i) {
+            return InkWell(
+              onTap: () => goToCategory(mainMenu!.categories![i]),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.grey),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: Text("${mainMenu!.categories![i].desc}"),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget homeMenu() {
+    return Expanded(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        color: Colors.blue,
+      ),
+    );
+  }
+
+  Widget banner() {
+    return Container(
+      height: 200,
+      color: Colors.redAccent,
+    );
+  }
+
+  goToCategory(Category category) {
+    WidgetsBinding.instance!.addPostFrameCallback((_){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(category.desc!),
+      ));
+    });
+
   }
 }
