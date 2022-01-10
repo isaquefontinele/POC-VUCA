@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:poc_vuca/components/cardImage.dart';
@@ -113,10 +112,6 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
-            'Headline',
-            style: TextStyle(fontSize: 18),
-          ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
@@ -125,17 +120,34 @@ class _HomePageState extends State<HomePage> {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (_, i) {
-                  return SizedBox(
-                    height: 200.0,
-                    child: ListView.builder(
-                        physics: ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: mainMenu!.categories![i].products!.length,
-                        itemBuilder: (_, j) {
-                          var product = mainMenu!.categories![i].products![j];
-                          return carouselItem(product);
-                        }),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            mainMenu!.categories![i].desc!,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 200.0,
+                          child: ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount:
+                                  mainMenu!.categories![i].products!.length,
+                              itemBuilder: (_, j) {
+                                var product =
+                                    mainMenu!.categories![i].products![j];
+                                return carouselItem(product);
+                              }),
+                        ),
+                      ],
+                    ),
                   );
                 }),
           ),
@@ -154,19 +166,34 @@ class _HomePageState extends State<HomePage> {
   goToCategory(Category category) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 500),
         content: Text(category.desc!),
       ));
     });
   }
 
   Widget carouselItem(MenuItem product) {
-    var picture = product.thumb != null && product.thumb!.length > 0 ? product.thumb![0] : "";
-    return Container(
-      width: 150,
-      child: Card(
-          child: (Column(
-        children: [CardImage(picture), Text(product.desc!)],
-      ))),
+    var picture = product.thumb != null && product.thumb!.length > 0
+        ? product.thumb![0]
+        : "";
+    return InkWell(
+      onTap: () => openProduct(product),
+      child: Container(
+        width: 150,
+        child: Card(
+            child: (Column(
+          children: [CardImage(picture), Text(product.desc!)],
+        ))),
+      ),
     );
+  }
+
+  openProduct(MenuItem product) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 500),
+        content: Text(product.desc!),
+      ));
+    });
   }
 }
