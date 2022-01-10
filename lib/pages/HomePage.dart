@@ -29,7 +29,8 @@ class _HomePageState extends State<HomePage> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: SingleChildScrollView(
-            child: Row(
+            child:
+            mainMenu == null ? Container() : Row(
               children: [
                 Expanded(
                   child: Column(
@@ -66,43 +67,40 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: 60,
       color: Colors.red,
-      child: (Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: mainMenu != null ? mainMenu!.categories!.length : 0,
-              itemBuilder: (context, i) {
-                return InkWell(
-                  onTap: () => goToCategory(mainMenu!.categories![i]),
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    height: 30,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.grey),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
+      child: (Expanded(
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: mainMenu!.categories!.length,
+          itemBuilder: (context, i) {
+            return InkWell(
+              onTap: () => goToCategory(mainMenu!.categories![i]),
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.grey),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: Offset(0, 0), // changes position of shadow
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 10),
-                      child: Text("${mainMenu!.categories![i].desc}"),
-                    ),
-                  ),
-                );
-              },
-            ),
-          )
-        ],
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 10),
+                  child: Text("${mainMenu!.categories![i].desc}"),
+                ),
+              ),
+            );
+          },
+        ),
       )),
     );
   }
