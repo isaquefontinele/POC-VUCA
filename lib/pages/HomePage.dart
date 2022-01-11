@@ -1,8 +1,12 @@
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:poc_vuca/components/cardImage.dart';
+import 'package:poc_vuca/components/carouselSliderImage.dart';
 import 'package:poc_vuca/components/loadingDialog.dart';
 import 'package:poc_vuca/models/menu.dart';
+import 'package:poc_vuca/utils/homePageUtils.dart';
 import 'package:poc_vuca/webservices/vuca/getMenu.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Menu? mainMenu;
+  int _current = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
@@ -29,22 +35,31 @@ class _HomePageState extends State<HomePage> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: SingleChildScrollView(
-            child:
-            mainMenu == null ? Container() : Row(
-              children: [
-                Expanded(
-                  child: Column(
+            child: mainMenu == null
+                ? Container()
+                : Row(
                     children: [
-                      Column(
-                        children: [banner(), categoriesList()],
-                      ),
-                      Divider(height: 1, thickness: 1, color: Colors.black),
-                      homeMenu(),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                banner(),
+                                Divider(
+                                    height: 1,
+                                    thickness: 1,
+                                    color: Colors.black),
+                                categoriesList()
+                              ],
+                            ),
+                            Divider(
+                                height: 1, thickness: 1, color: Colors.black),
+                            homeMenu(),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
           ),
         ),
       )),
@@ -93,8 +108,8 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   child: Text("${mainMenu!.categories![i].desc}"),
                 ),
               ),
@@ -156,8 +171,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget banner() {
     return Container(
-      height: 200,
-      color: Colors.redAccent,
+      height: 330,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.black87,
+      child: ImageSlider(HomeUtils.getCoverImages(mainMenu!)),
     );
   }
 
