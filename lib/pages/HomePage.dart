@@ -18,8 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Menu? mainMenu;
-  int _current = 0;
-  final CarouselController _controller = CarouselController();
 
   @override
   void initState() {
