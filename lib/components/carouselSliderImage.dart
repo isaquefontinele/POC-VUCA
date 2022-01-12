@@ -45,32 +45,34 @@ class _ImageSliderState extends State<ImageSlider> {
                                   width: MediaQuery.of(context).size.width / 2),
                               alignment: Alignment.bottomCenter,
                             ),
-                            Align(child: Text(
-                              item.desc!,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                  shadows: [
-                                    Shadow( // bottomLeft
-                                        offset: Offset(-1.5, -1.5),
-                                        color: Colors.black
-                                    ),
-                                    Shadow( // bottomRight
-                                        offset: Offset(1.5, -1.5),
-                                        color: Colors.black
-                                    ),
-                                    Shadow( // topRight
-                                        offset: Offset(1.5, 1.5),
-                                        color: Colors.black
-                                    ),
-                                    Shadow( // topLeft
-                                        offset: Offset(-1.5, 1.5),
-                                        color: Colors.black
-                                    ),
-                                  ]),
-                            ),
-                            alignment: Alignment.bottomCenter,)
+                            Align(
+                              child: Text(
+                                item.desc!,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                          // bottomLeft
+                                          offset: Offset(-1.5, -1.5),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // bottomRight
+                                          offset: Offset(1.5, -1.5),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // topRight
+                                          offset: Offset(1.5, 1.5),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // topLeft
+                                          offset: Offset(-1.5, 1.5),
+                                          color: Colors.black),
+                                    ]),
+                              ),
+                              alignment: Alignment.bottomCenter,
+                            )
                           ],
                         )),
                       ))
