@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_controller.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:poc_vuca/components/cardImage.dart';
 import 'package:poc_vuca/components/carouselSliderImage.dart';
 import 'package:poc_vuca/components/loadingDialog.dart';
 import 'package:poc_vuca/models/menu.dart';
+import 'package:poc_vuca/utils/appColors.dart';
 import 'package:poc_vuca/utils/homePageUtils.dart';
 import 'package:poc_vuca/webservices/vuca/getMenu.dart';
 
@@ -33,32 +32,7 @@ class _HomePageState extends State<HomePage> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: SingleChildScrollView(
-            child: mainMenu == null
-                ? Container()
-                : Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Column(
-                              children: [
-                                banner(),
-                                Divider(
-                                    height: 1,
-                                    thickness: 1,
-                                    color: Colors.black),
-                                categoriesList()
-                              ],
-                            ),
-                            Divider(
-                                height: 1, thickness: 1, color: Colors.black),
-                            homeMenu(),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-          ),
+              child: mainMenu == null ? Container() : homeContent()),
         ),
       )),
     );
@@ -76,10 +50,37 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Widget homeContent() {
+    return Stack(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              banner(),
+              Divider(height: 1, thickness: 1, color: Colors.black),
+              categoriesList(),
+              Divider(height: 1, thickness: 1, color: Colors.black),
+              homeMenu(),
+            ],
+          ),
+        ),
+        Visibility(
+          visible: false,
+          child: Expanded(
+              child: Row(
+                children: [
+
+                ],
+              )),
+        )
+      ],
+    );
+  }
+
   Widget categoriesList() {
     return Container(
       height: 60,
-      color: Colors.red,
+      color: AppColors.grayDarkCategories,
       child: (Expanded(
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
@@ -93,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 height: 30,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey),
                   color: Colors.white,
                   boxShadow: [
@@ -123,44 +124,49 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: mainMenu!.categories!.length,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (_, i) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Text(
-                            mainMenu!.categories![i].desc!,
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600),
+          Container(
+            color: AppColors.grayBanner,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: mainMenu!.categories!.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (_, i) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              mainMenu!.categories![i].desc!,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 200.0,
-                          child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount:
-                                  mainMenu!.categories![i].products!.length,
-                              itemBuilder: (_, j) {
-                                var product =
-                                    mainMenu!.categories![i].products![j];
-                                return carouselItem(product);
-                              }),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+                          SizedBox(
+                            height: 200.0,
+                            child: ListView.builder(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount:
+                                    mainMenu!.categories![i].products!.length,
+                                itemBuilder: (_, j) {
+                                  var product =
+                                      mainMenu!.categories![i].products![j];
+                                  return carouselItem(product);
+                                }),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+            ),
           ),
         ],
       ),
@@ -171,18 +177,9 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: 330,
       width: MediaQuery.of(context).size.width,
-      color: Colors.black87,
+      color: AppColors.grayBanner,
       child: ImageSlider(HomeUtils.getCoverImages(mainMenu!)),
     );
-  }
-
-  goToCategory(Category category) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: Duration(milliseconds: 500),
-        content: Text(category.desc!),
-      ));
-    });
   }
 
   Widget carouselItem(MenuItem product) {
@@ -195,10 +192,19 @@ class _HomePageState extends State<HomePage> {
         width: 150,
         child: Card(
             child: (Column(
-          children: [CardImage(picture), Text(product.desc!)],
+          children: [CardImage(picture), Text(product.desc!, textAlign: TextAlign.center)],
         ))),
       ),
     );
+  }
+
+  goToCategory(Category category) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 500),
+        content: Text(category.desc!),
+      ));
+    });
   }
 
   openProduct(MenuItem product) {

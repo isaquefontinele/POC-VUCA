@@ -6,7 +6,7 @@ class HomeUtils {
     return mainMenu.categories!
         .firstWhere((element) => element.id == "1")
         .products!
-        .map((product) => product.thumb!.length > 0 ? product : null)
+        .map((product) => product.ft!.length > 0 ? product : null)
         .where((element) => element != null)
         .toList();
   }
