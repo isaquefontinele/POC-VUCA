@@ -17,11 +17,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Menu? mainMenu;
+  late bool showCategoryDetails;
 
   @override
   void initState() {
     super.initState();
     loadMenu();
+    showCategoryDetails = false;
   }
 
   @override
@@ -53,26 +55,21 @@ class _HomePageState extends State<HomePage> {
   Widget homeContent() {
     return Stack(
       children: [
-        Expanded(
-          child: Column(
-            children: [
-              banner(),
-              Divider(height: 1, thickness: 1, color: Colors.black),
-              categoriesList(),
-              Divider(height: 1, thickness: 1, color: Colors.black),
-              homeMenu(),
-            ],
-          ),
-        ),
-        Visibility(
-          visible: false,
-          child: Expanded(
-              child: Row(
+        Row(
+          children: [
+            Expanded(
+              child: Column(
                 children: [
-
+                  banner(),
+                  Divider(height: 1, thickness: 1, color: Colors.black),
+                  categoriesList(),
+                  Divider(height: 1, thickness: 1, color: Colors.black),
+                  homeMenu(),
                 ],
-              )),
-        )
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -81,7 +78,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: 60,
       color: AppColors.grayDarkCategories,
-      child: (Expanded(
+      child: Expanded(
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
@@ -115,7 +112,7 @@ class _HomePageState extends State<HomePage> {
             );
           },
         ),
-      )),
+      ),
     );
   }
 
@@ -157,9 +154,7 @@ class _HomePageState extends State<HomePage> {
                                 itemCount:
                                     mainMenu!.categories![i].products!.length,
                                 itemBuilder: (_, j) {
-                                  var product =
-                                      mainMenu!.categories![i].products![j];
-                                  return carouselItem(product);
+                                  return carouselItem(i, j);
                                 }),
                           ),
                         ],
@@ -182,12 +177,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget carouselItem(MenuItem product) {
+  Widget carouselItem(int i, int j) {
+    var category = mainMenu!.categories![i];
+    var product = category.products![j];
     var picture = product.thumb != null && product.thumb!.length > 0
         ? product.thumb![0]
         : "";
     return InkWell(
-      onTap: () => openProduct(product),
+      onTap: () => openProduct(category),
       child: Container(
         width: 150,
         child: Card(
@@ -207,12 +204,74 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  openProduct(MenuItem product) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: Duration(milliseconds: 500),
-        content: Text(product.desc!),
-      ));
-    });
+  openProduct(Category category) {
+    productListDialog(category);
+  }
+
+  productListDialog(Category selectedCategory) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.black12.withOpacity(0.6), // Background color
+      barrierDismissible: false,
+      transitionDuration: Duration(milliseconds: 400), // How long it takes to popup dialog after button click
+      pageBuilder: (_, __, ___) {
+        // Makes widget fullscreen
+        return Center(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height - 100,
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topRight,
+                  child: SizedBox(
+                    height: 100,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 50),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(20),
+                          primary: Colors.red, // <-- Button color
+                          onPrimary: Colors.white, // <-- Splash color
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: Icon(Icons.close),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 100,
+                    height: MediaQuery.of(context).size.height - 300,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: selectedCategory!.products!.length,
+                        padding: EdgeInsets.only(bottom: 12),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          var product = selectedCategory!.products![index];
+                          return Material(
+                            child: InkWell(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 140,
+                                decoration: BoxDecoration(color: Colors.transparent),
+                                child: Card(
+                                    child: (Column(
+                                      children: [CardImage(product.ft!), Text(product.desc!, textAlign: TextAlign.center)],
+                                    ))),
+                              ),
+                              onTap: () {},
+                            ),
+                          );
+                        })
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
