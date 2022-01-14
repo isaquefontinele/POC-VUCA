@@ -8,77 +8,95 @@ class ProductsListDialog {
   static open(BuildContext context, Category selectedCategory) {
     showGeneralDialog(
       context: context,
-      barrierColor: Colors.black12.withOpacity(0.8), // Background color
+      barrierColor: Colors.black12.withOpacity(0.8),
+      // Background color
       barrierDismissible: false,
-      transitionDuration: Duration(milliseconds: 400), // How long it takes to popup dialog after button click
+      transitionDuration: Duration(milliseconds: 400),
+      // How long it takes to popup dialog after button click
       pageBuilder: (_, __, ___) {
         return Stack(
           children: <Widget>[
-            Center(child: SizedBox(
-                height: 400,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: selectedCategory.products!.length,
-                    padding: EdgeInsets.only(bottom: 12),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      var product = selectedCategory.products![index];
-                      return Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          child: Container(
-                            width: 300,
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            height: MediaQuery.of(context).size.height,
-                            decoration: BoxDecoration(color: Colors.transparent),
-                            child: Card(
-                              borderOnForeground: true,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: (Column(
-                                children: [
-                                  CardImage(product.ft![0], 200),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    child: Marquee(
-                                      direction: Axis.horizontal,
-                                      child: Text(product.desc!, textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black)
+            Center(
+                child: SizedBox(
+                    height: 400,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: selectedCategory.products!.length,
+                        padding: EdgeInsets.only(bottom: 12),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          var product = selectedCategory.products![index];
+                          var picture =
+                              product.ft != null && product.ft!.isNotEmpty
+                                  ? product.ft![0]
+                                  : "";
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              child: Container(
+                                width: 300,
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                height: MediaQuery.of(context).size.height,
+                                decoration:
+                                    BoxDecoration(color: Colors.transparent),
+                                child: Card(
+                                  borderOnForeground: true,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: (Column(
+                                    children: [
+                                      SizedBox(
+                                        child: CardImage(picture, 200),
+                                        height: 200,
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                                    child: Divider(thickness: 1, height: 1,),
-                                  ),
-                                  SizedBox(
-                                    height: 100,
-                                    child: Expanded(
-                                      child: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Text(product.descr!, textAlign: TextAlign.center,
-                                              style: TextStyle(fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black)
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Marquee(
+                                          direction: Axis.horizontal,
+                                          child: Text(product.desc!,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Divider(
+                                          thickness: 1,
+                                          height: 1,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 100,
+                                        child: Expanded(
+                                          child: SingleChildScrollView(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(product.descr!,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black)),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )),
+                                    ],
+                                  )),
+                                ),
+                              ),
+                              onTap: () {},
                             ),
-                          ),
-                          onTap: () {},
-                        ),
-                      );
-                    })
-            )),
+                          );
+                        }))),
             Align(
               alignment: Alignment.topRight,
               child: SizedBox(
