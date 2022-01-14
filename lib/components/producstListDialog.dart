@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:poc_vuca/components/marquee.dart';
+import 'package:poc_vuca/models/cart.dart';
 import 'package:poc_vuca/models/menu.dart';
 
 import 'cardImage.dart';
 
 class ProductsListDialog {
+  Cart cart = Cart();
+
   static open(BuildContext context, Category selectedCategory) {
     showGeneralDialog(
       context: context,

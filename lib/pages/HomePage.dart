@@ -5,6 +5,7 @@ import 'package:poc_vuca/components/carouselSliderImage.dart';
 import 'package:poc_vuca/components/loadingDialog.dart';
 import 'package:poc_vuca/components/marquee.dart';
 import 'package:poc_vuca/components/producstListDialog.dart';
+import 'package:poc_vuca/models/cart.dart';
 import 'package:poc_vuca/models/menu.dart';
 import 'package:poc_vuca/utils/appColors.dart';
 import 'package:poc_vuca/utils/homePageUtils.dart';
@@ -20,10 +21,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Menu? mainMenu;
   late bool showCategoryDetails;
+  late Cart cart;
 
   @override
   void initState() {
     super.initState();
+    initCart();
     loadMenu();
     showCategoryDetails = false;
   }
@@ -208,6 +211,10 @@ class _HomePageState extends State<HomePage> {
         content: Text(category.desc!),
       ));
     });
+  }
+
+  void initCart() {
+    cart = Cart();
   }
 
 }
