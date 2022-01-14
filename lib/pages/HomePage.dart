@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:poc_vuca/components/cardImage.dart';
 import 'package:poc_vuca/components/carouselSliderImage.dart';
 import 'package:poc_vuca/components/loadingDialog.dart';
+import 'package:poc_vuca/components/marquee.dart';
+import 'package:poc_vuca/components/producstListDialog.dart';
 import 'package:poc_vuca/models/menu.dart';
 import 'package:poc_vuca/utils/appColors.dart';
 import 'package:poc_vuca/utils/homePageUtils.dart';
@@ -184,12 +186,16 @@ class _HomePageState extends State<HomePage> {
         ? product.thumb![0]
         : "";
     return InkWell(
-      onTap: () => openProduct(category),
+      onTap: () => ProductsListDialog.open(context, category),
       child: Container(
         width: 150,
         child: Card(
+            borderOnForeground: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             child: (Column(
-          children: [CardImage(picture), Text(product.desc!, textAlign: TextAlign.center)],
+          children: [CardImage(picture, 100), Text(product.desc!, textAlign: TextAlign.center)],
         ))),
       ),
     );
@@ -204,74 +210,5 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  openProduct(Category category) {
-    productListDialog(category);
-  }
 
-  productListDialog(Category selectedCategory) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: Colors.black12.withOpacity(0.6), // Background color
-      barrierDismissible: false,
-      transitionDuration: Duration(milliseconds: 400), // How long it takes to popup dialog after button click
-      pageBuilder: (_, __, ___) {
-        // Makes widget fullscreen
-        return Center(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height - 100,
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SizedBox(
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 50),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: CircleBorder(),
-                          padding: EdgeInsets.all(20),
-                          primary: Colors.red, // <-- Button color
-                          onPrimary: Colors.white, // <-- Splash color
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                        child: Icon(Icons.close),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 100,
-                    height: MediaQuery.of(context).size.height - 300,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: selectedCategory!.products!.length,
-                        padding: EdgeInsets.only(bottom: 12),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          var product = selectedCategory!.products![index];
-                          return Material(
-                            child: InkWell(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 140,
-                                decoration: BoxDecoration(color: Colors.transparent),
-                                child: Card(
-                                    child: (Column(
-                                      children: [CardImage(product.ft!), Text(product.desc!, textAlign: TextAlign.center)],
-                                    ))),
-                              ),
-                              onTap: () {},
-                            ),
-                          );
-                        })
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }

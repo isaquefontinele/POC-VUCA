@@ -47,7 +47,7 @@ class MenuItem {
   final String? descr;
   final String? val;
   final String? aPar;
-  final String? ft;
+  final List<String>? ft;
   final List<String>? thumb;
 
   MenuItem(
@@ -70,7 +70,7 @@ class MenuItem {
         descr: json['descr'].toString(),
         val: json['val'].toString(),
         aPar: json['aPar'].toString(),
-        ft: json['ft'].toString(),
+        ft: new List<String>.from(json['ft']),
         thumb: new List<String>.from(json['thumb']));
   }
 
