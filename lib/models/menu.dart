@@ -49,6 +49,7 @@ class MenuItem {
   final String? aPar;
   final List<String>? ft;
   final List<String>? thumb;
+  int? amount;
 
   MenuItem(
       {this.id,
@@ -59,7 +60,8 @@ class MenuItem {
       this.val,
       this.aPar,
       this.ft,
-      this.thumb});
+      this.thumb,
+      this.amount});
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
     return MenuItem(
@@ -71,7 +73,8 @@ class MenuItem {
         val: json['val'].toDouble(),
         aPar: json['aPar'].toString(),
         ft: new List<String>.from(json['ft']),
-        thumb: new List<String>.from(json['thumb']));
+        thumb: new List<String>.from(json['thumb']),
+        amount: 1);
   }
 
   Map<String, dynamic> toJson() => {
