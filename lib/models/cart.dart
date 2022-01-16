@@ -9,7 +9,7 @@ class Cart {
 
   Cart._internal();
 
-  List<MenuItem> products = List.empty();
+  List<MenuItem> products = [];
   Map<String, int> amounts = Map();
 
   double getTotalValue(){

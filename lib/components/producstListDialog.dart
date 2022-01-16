@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:poc_vuca/components/marquee.dart';
 import 'package:poc_vuca/models/cart.dart';
 import 'package:poc_vuca/models/menu.dart';
+import 'package:poc_vuca/pages/CartPage.dart';
 import 'package:poc_vuca/utils/appColors.dart';
 
 import 'cardImage.dart';
@@ -23,7 +24,9 @@ class ProductsListDialog {
 }
 
 class ProductsListContent extends StatefulWidget {
+
   final Category selectedCategory;
+
   const ProductsListContent({Key? key, required this.selectedCategory}) : super(key: key);
 
   @override
@@ -31,9 +34,9 @@ class ProductsListContent extends StatefulWidget {
 }
 
 class _ProductsListContentState extends State<ProductsListContent> {
+
   @override
   Widget build(BuildContext context) {
-    Cart cart = Cart();
     return Stack(
       children: <Widget>[
         productList(widget.selectedCategory),
@@ -80,7 +83,7 @@ class _ProductsListContentState extends State<ProductsListContent> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 10),
+                                left: 10, right: 10, top: 8),
                             child: Marquee(
                               direction: Axis.horizontal,
                               child: Text(product.desc!,
@@ -174,36 +177,39 @@ class _ProductsListContentState extends State<ProductsListContent> {
                                   ),
                                 ),
                                 Spacer(flex: 1,),
-                                Container(
-                                  height: 40,
-                                  color: AppColors.grayBanner,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                                    child: Row(children: [
-                                      Icon(Icons.add_shopping_cart,size: 20, color: Colors.white),
-                                      Padding(padding: EdgeInsets.only(right: 10)),
-                                      Text(
-                                          "Adicionar",
-                                          textAlign:
-                                          TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              color:
-                                              Colors.white)),
-                                      Padding(padding: EdgeInsets.only(right: 10)),
-                                      Text(
-                                          "R\$ "+ currencyFormatter.format(product.amount! * product.val!),
-                                          textAlign:
-                                          TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight:
-                                              FontWeight.bold,
-                                              color:
-                                              Colors.white)),
-                                    ],),
+                                InkWell(
+                                  onTap: () => addToCart(product),
+                                  child: Container(
+                                    height: 40,
+                                    color: AppColors.grayBanner,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                      child: Row(children: [
+                                        Icon(Icons.add_shopping_cart,size: 20, color: Colors.white),
+                                        Padding(padding: EdgeInsets.only(right: 10)),
+                                        Text(
+                                            "Adicionar",
+                                            textAlign:
+                                            TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color:
+                                                Colors.white)),
+                                        Padding(padding: EdgeInsets.only(right: 10)),
+                                        Text(
+                                            "R\$ "+ currencyFormatter.format(product.amount! * product.val!),
+                                            textAlign:
+                                            TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color:
+                                                Colors.white)),
+                                      ],),
+                                    ),
                                   ),
                                 )
                               ],
@@ -256,5 +262,12 @@ class _ProductsListContentState extends State<ProductsListContent> {
   resetAndClose() {
     widget.selectedCategory.resetAmounts();
     Navigator.pop(context);
+  }
+
+  addToCart(MenuItem product) {
+    Cart cart = Cart();
+    cart.addProductToCart(product);
+    // resetAndClose();
+    Navigator.popAndPushNamed(context, "/cart");
   }
 }
