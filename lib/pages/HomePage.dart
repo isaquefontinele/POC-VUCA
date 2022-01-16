@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:poc_vuca/components/cardImage.dart';
 import 'package:poc_vuca/components/carouselSliderImage.dart';
 import 'package:poc_vuca/components/loadingDialog.dart';
-import 'package:poc_vuca/components/marquee.dart';
 import 'package:poc_vuca/components/producstListDialog.dart';
 import 'package:poc_vuca/models/cart.dart';
 import 'package:poc_vuca/models/menu.dart';

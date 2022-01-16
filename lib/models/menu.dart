@@ -37,6 +37,10 @@ class Category {
 
   Map<String, dynamic> toJson() =>
       {'id': id, 'desc': desc, 'hora': time, 'produtos': products};
+
+  void resetAmounts() {
+    products!.forEach((element) {element.amount = 1;});
+  }
 }
 
 class MenuItem {

@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:poc_vuca/components/marquee.dart';
 import 'package:poc_vuca/models/cart.dart';
 import 'package:poc_vuca/models/menu.dart';
 import 'package:poc_vuca/utils/appColors.dart';
 
 import 'cardImage.dart';
-List<String> countries = <String>['Belgium','France','Italy','Germany','Spain','Portugal'];
 
 class ProductsListDialog {
-
 
   static open(BuildContext context, Category selectedCategory) async {
     await showDialog<String>(
@@ -34,155 +33,183 @@ class ProductsListContent extends StatefulWidget {
 class _ProductsListContentState extends State<ProductsListContent> {
   @override
   Widget build(BuildContext context) {
-    Category selectedCategory = widget.selectedCategory;
     Cart cart = Cart();
-
     return Stack(
       children: <Widget>[
-        Center(
-            child: SizedBox(
-                height: 400,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: selectedCategory.products!.length,
-                    padding: EdgeInsets.only(bottom: 12),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      var product = selectedCategory.products![index];
-                      var picture =
-                      product.ft != null && product.ft!.isNotEmpty
-                          ? product.ft![0]
-                          : "";
-                      return Container(
-                        width: 300,
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        height: MediaQuery.of(context).size.height,
-                        decoration:
-                        BoxDecoration(color: Colors.transparent),
-                        child: Card(
-                          borderOnForeground: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+        productList(widget.selectedCategory),
+        closeDialogButton()
+      ],
+    );
+  }
+
+  Widget productList(Category selectedCategory) {
+    return Center(
+        child: SizedBox(
+            height: 420,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
+                itemCount: selectedCategory.products!.length,
+                padding: EdgeInsets.only(bottom: 12),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  var product = selectedCategory.products![index];
+                  var picture =
+                  product.ft != null && product.ft!.isNotEmpty
+                      ? product.ft![0]
+                      : "";
+                  final currencyFormatter = new NumberFormat("#,##0.00", "pt_BR");
+                  return Container(
+                    width: 400,
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    height: MediaQuery.of(context).size.height,
+                    decoration:
+                    BoxDecoration(color: Colors.transparent),
+                    child: Card(
+                      borderOnForeground: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: (Column(
+                        children: [
+                          SizedBox(
+                            child: CardImage(picture, 200),
+                            height: 200,
                           ),
-                          child: (Column(
-                            children: [
-                              SizedBox(
-                                child: CardImage(picture, 200),
-                                height: 200,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10),
-                                child: Marquee(
-                                  direction: Axis.horizontal,
-                                  child: Text(product.desc!,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10),
+                            child: Marquee(
+                              direction: Axis.horizontal,
+                              child: Text(product.desc!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Divider(
+                              thickness: 1,
+                              height: 1,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 80,
+                            child: Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets.all(10),
+                                  child: Text(product.descr!,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          fontWeight:
+                                          FontWeight.w600,
                                           color: Colors.black)),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10),
-                                child: Divider(
-                                  thickness: 1,
-                                  height: 1,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 100,
-                                child: Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets.all(10),
-                                      child: Text(product.descr!,
-                                          textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Divider(
+                              thickness: 1,
+                              height: 1,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  color: AppColors.grayBanner,
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () => {
+                                          if (product.amount! > 1)
+                                            {
+                                              setState(() {
+                                                product.amount = product.amount!-1;
+                                              })
+                                            }
+                                        },
+                                        child: counterButton("-"),
+                                      ),
+                                      Text(
+                                          product.amount.toString(),
+                                          textAlign:
+                                          TextAlign.center,
                                           style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 20,
                                               fontWeight:
-                                              FontWeight.w600,
-                                              color: Colors.black)),
-                                    ),
+                                              FontWeight.bold,
+                                              color:
+                                              Colors.white)),
+                                      InkWell(
+                                        onTap: () => {
+                                          if (product.amount! <=
+                                              999)
+                                            {
+                                              setState(() {
+                                                product.amount = product.amount!+1;
+                                              })
+                                            }
+                                        },
+                                        child: counterButton("+"),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      color: AppColors.grayBanner,
-                                      child: Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: () => {
-                                              if (product.amount! > 1)
-                                                {
-                                                  setState(() {
-                                                    product.amount = product.amount!-1;
-                                                  })
-                                                }
-                                            },
-                                            child: counterButton("-"),
-                                          ),
-                                          Text(
-                                              product.amount.toString(),
-                                              textAlign:
-                                              TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  color:
-                                                  Colors.white)),
-                                          InkWell(
-                                            onTap: () => {
-                                              if (product.amount! <=
-                                                  999)
-                                                {
-                                                  setState(() {
-                                                    product.amount = product.amount!+1;
-                                                  })
-                                                }
-                                            },
-                                            child: counterButton("+"),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          )),
-                        ),
-                      );
-                    }))),
-        Align(
-          alignment: Alignment.topRight,
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 30, top: 30),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
-                  primary: Colors.red, // <-- Button color
-                  onPrimary: Colors.white, // <-- Splash color
-                ),
-                onPressed: () => Navigator.pop(context),
-                child: Icon(Icons.close),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+                                Spacer(flex: 1,),
+                                Container(
+                                  height: 40,
+                                  color: AppColors.grayBanner,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                    child: Row(children: [
+                                      Icon(Icons.add_shopping_cart,size: 20, color: Colors.white),
+                                      Padding(padding: EdgeInsets.only(right: 10)),
+                                      Text(
+                                          "Adicionar",
+                                          textAlign:
+                                          TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              color:
+                                              Colors.white)),
+                                      Padding(padding: EdgeInsets.only(right: 10)),
+                                      Text(
+                                          "R\$ "+ currencyFormatter.format(product.amount! * product.val!),
+                                          textAlign:
+                                          TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight:
+                                              FontWeight.bold,
+                                              color:
+                                              Colors.white)),
+                                    ],),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )),
+                    ),
+                  );
+                })));
   }
 
   Widget counterButton(String text) {
@@ -199,5 +226,31 @@ class _ProductsListContentState extends State<ProductsListContent> {
               color: Colors
                   .white)),
     );
+  }
+
+  Widget closeDialogButton() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 30, top: 30),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              primary: Colors.red, // <-- Button color
+              onPrimary: Colors.white, // <-- Splash color
+            ),
+            onPressed: () => resetAndClose(),
+            child: Icon(Icons.close),
+          ),
+        ),
+      ),
+    );
+  }
+
+  resetAndClose() {
+    widget.selectedCategory.resetAmounts();
+    Navigator.pop(context);
   }
 }
