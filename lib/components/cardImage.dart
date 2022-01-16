@@ -13,11 +13,11 @@ class CardImage extends StatelessWidget {
       child: FadeInImage.assetNetwork(
         height: height,
         width: MediaQuery.of(context).size.width,
-        placeholder: 'assets/placeholder.png',
+        placeholder: 'assets/placeholder_dark.png',
         image: imageURL,
         fit: BoxFit.fitWidth,
         imageErrorBuilder: (context, error, stackTrace) {
-          return Image.asset('assets/placeholder.png', fit: BoxFit.fitWidth, height: 100, width: MediaQuery.of(context).size.width);
+          return Image.asset('assets/placeholder_dark.png', fit: BoxFit.fitWidth, height: 100, width: MediaQuery.of(context).size.width);
         },
       ),
     );

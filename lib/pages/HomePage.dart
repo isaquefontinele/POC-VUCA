@@ -190,14 +190,29 @@ class _HomePageState extends State<HomePage> {
     return InkWell(
       onTap: () => ProductsListDialog.open(context, category),
       child: Container(
-        width: 150,
+        width: 200,
         child: Card(
+            color: AppColors.grayDarkCategories,
             borderOnForeground: true,
             shape: RoundedRectangleBorder(
+              side: new BorderSide(color: Colors.black, width: 1.0),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: (Column(
-          children: [CardImage(picture, 100), Text(product.desc!, textAlign: TextAlign.center)],
+          children: [
+            CardImage(picture, 100),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                product.desc!,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ))),
       ),
     );

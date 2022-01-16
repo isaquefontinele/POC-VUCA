@@ -66,8 +66,10 @@ class _ProductsListContentState extends State<ProductsListContent> {
                     decoration:
                     BoxDecoration(color: Colors.transparent),
                     child: Card(
+                      color: AppColors.grayDarkCategories,
                       borderOnForeground: true,
                       shape: RoundedRectangleBorder(
+                        side: new BorderSide(color: Colors.black, width: 1.0),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: (Column(
@@ -77,8 +79,8 @@ class _ProductsListContentState extends State<ProductsListContent> {
                             height: 200,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10),
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10),
                             child: Marquee(
                               direction: Axis.horizontal,
                               child: Text(product.desc!,
@@ -86,13 +88,14 @@ class _ProductsListContentState extends State<ProductsListContent> {
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black)),
+                                      color: Colors.white)),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
+                                horizontal: 10, vertical: 8),
                             child: Divider(
+                              color: AppColors.grayBanner,
                               thickness: 1,
                               height: 1,
                             ),
@@ -110,15 +113,16 @@ class _ProductsListContentState extends State<ProductsListContent> {
                                           fontSize: 14,
                                           fontWeight:
                                           FontWeight.w600,
-                                          color: Colors.black)),
+                                          color: Colors.white)),
                                 ),
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
+                                horizontal: 10, vertical: 8),
                             child: Divider(
+                              color: AppColors.grayBanner,
                               thickness: 1,
                               height: 1,
                             ),
