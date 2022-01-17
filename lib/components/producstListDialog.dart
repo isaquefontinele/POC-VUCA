@@ -284,7 +284,7 @@ class _ProductsListContentState extends State<ProductsListContent> {
     setState(() {
       cart.addProductToCart(product);
     });
-    // resetAndClose();
-    Navigator.popAndPushNamed(context, "/cart");
+    resetAndClose();
+    Navigator.pushNamed(context, "/cart");
   }
 }

@@ -185,7 +185,7 @@ class _HomePageState extends State<HomePage> {
         ? product.thumb![0]
         : "";
     return InkWell(
-      onTap: () => ProductsListDialog.open(context, category),
+      onTap: () => ProductsListDialog.open(context, category).then((_) => setState(() {})),
       child: Container(
         width: 200,
         child: Card(
@@ -277,6 +277,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   openCart() {
-    Navigator.pushNamed(context, "/cart");
+    Navigator.pushNamed(context, "/cart").then((_) => setState(() {}));
   }
 }
