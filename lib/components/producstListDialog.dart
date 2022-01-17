@@ -1,10 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:poc_vuca/components/marquee.dart';
 import 'package:poc_vuca/models/cart.dart';
 import 'package:poc_vuca/models/menu.dart';
-import 'package:poc_vuca/pages/CartPage.dart';
 import 'package:poc_vuca/utils/appColors.dart';
 
 import 'cardImage.dart';
@@ -12,11 +13,23 @@ import 'cardImage.dart';
 class ProductsListDialog {
 
   static open(BuildContext context, Category selectedCategory) async {
-    await showDialog<String>(
+    await showGeneralDialog<String>(
       context: context,
       barrierColor: Colors.black12.withOpacity(0.8),
       barrierDismissible: false,
-      builder: (BuildContext context) {
+      transitionDuration: Duration(milliseconds: 400),
+      transitionBuilder: (_, anim, __, child) {
+        Tween<Offset> tween;
+        tween = Tween(begin: Offset(0, 1), end: Offset.zero);
+        return SlideTransition(
+          position: tween.animate(anim),
+          child: FadeTransition(
+            opacity: anim,
+            child: child,
+          ),
+        );
+      },
+      pageBuilder: (_, __, ___) {
         return ProductsListContent(selectedCategory: selectedCategory);
       },
     );
@@ -37,11 +50,14 @@ class _ProductsListContentState extends State<ProductsListContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        productList(widget.selectedCategory),
-        closeDialogButton()
-      ],
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Stack(
+        children: <Widget>[
+          productList(widget.selectedCategory),
+          closeDialogButton()
+        ],
+      ),
     );
   }
 
