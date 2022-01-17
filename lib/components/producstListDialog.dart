@@ -64,7 +64,7 @@ class _ProductsListContentState extends State<ProductsListContent> {
   Widget productList(Category selectedCategory) {
     return Center(
         child: SizedBox(
-            height: 420,
+            height: 410,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 physics: BouncingScrollPhysics(),
@@ -81,7 +81,6 @@ class _ProductsListContentState extends State<ProductsListContent> {
                   return Container(
                     width: 400,
                     margin: EdgeInsets.symmetric(horizontal: 20),
-                    height: MediaQuery.of(context).size.height,
                     decoration:
                     BoxDecoration(color: Colors.transparent),
                     child: Card(
@@ -112,7 +111,7 @@ class _ProductsListContentState extends State<ProductsListContent> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 8),
+                                horizontal: 10, vertical: 5),
                             child: Divider(
                               color: AppColors.grayBanner,
                               thickness: 1,
@@ -139,7 +138,7 @@ class _ProductsListContentState extends State<ProductsListContent> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 8),
+                                horizontal: 10, vertical: 5),
                             child: Divider(
                               color: AppColors.grayBanner,
                               thickness: 1,
@@ -282,7 +281,9 @@ class _ProductsListContentState extends State<ProductsListContent> {
 
   addToCart(MenuItem product) {
     Cart cart = Cart();
-    cart.addProductToCart(product);
+    setState(() {
+      cart.addProductToCart(product);
+    });
     // resetAndClose();
     Navigator.popAndPushNamed(context, "/cart");
   }

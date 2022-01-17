@@ -37,8 +37,11 @@ class _HomePageState extends State<HomePage> {
           body: Container(
         child: Align(
           alignment: Alignment.centerLeft,
-          child: SingleChildScrollView(
-              child: mainMenu == null ? Container() : homeContent()),
+          child: mainMenu == null
+              ? Container()
+              : Stack(
+                  children: [homeContent(), cartButton()],
+                ),
         ),
       )),
     );
@@ -57,24 +60,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget homeContent() {
-    return Stack(
-      children: [
-        Row(
+    return SingleChildScrollView(
+      child: Expanded(
+        child: Column(
           children: [
-            Expanded(
-              child: Column(
-                children: [
-                  banner(),
-                  Divider(height: 1, thickness: 1, color: Colors.black),
-                  categoriesList(),
-                  Divider(height: 1, thickness: 1, color: Colors.black),
-                  homeMenu(),
-                ],
-              ),
-            ),
+            banner(),
+            Divider(height: 1, thickness: 1, color: Colors.black),
+            categoriesList(),
+            Divider(height: 1, thickness: 1, color: Colors.black),
+            homeMenu(),
           ],
         ),
-      ],
+      ),
     );
   }
 
@@ -199,21 +196,21 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: (Column(
-          children: [
-            CardImage(picture, 100),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                product.desc!,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ))),
+              children: [
+                CardImage(picture, 100),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    product.desc!,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ))),
       ),
     );
   }
@@ -231,4 +228,55 @@ class _HomePageState extends State<HomePage> {
     cart = Cart();
   }
 
+  Widget cartButton() {
+    var amountOfProducts = cart.products.length;
+    return Align(
+      alignment: Alignment.topRight,
+      child: InkWell(
+        onTap: () => openCart(),
+        child: Container(
+            margin: EdgeInsets.all(10),
+            height: 50,
+            width: 140,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey),
+              color: AppColors.grayDarkCategories,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.shopping_cart,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    amountOfProducts.toString() +
+                        (amountOfProducts == 1 ? " item" : " itens"),
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
+                )
+              ],
+            )),
+      ),
+    );
+  }
+
+  openCart() {
+    Navigator.pushNamed(context, "/cart");
+  }
 }
