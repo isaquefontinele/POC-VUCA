@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vuca.poc_vuca">
-   <application
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
         android:label="poc_vuca"
         android:icon="@mipmap/ic_launcher">
         <activity
