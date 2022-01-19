@@ -35,15 +35,18 @@ class _CartPageState extends State<CartPage> {
                         padding: const EdgeInsets.all(20.0),
                         child: Row(
                           children: [
-                            Text(cart.products[i].desc!,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
+                            Container(
+                              child: Text(cart.products[i].desc!,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                              width: 250,
+                            ),
                             Spacer(),
                             Padding(
-                              padding: const EdgeInsets.only(right: 20),
+                              padding: const EdgeInsets.only(left: 20, right: 20),
                               child: Text("R\$ "+ currencyFormatter.format(cart.products[i].val),
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
