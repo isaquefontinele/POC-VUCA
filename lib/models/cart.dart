@@ -19,21 +19,17 @@ class Cart {
   }
 
   void addProductToCart(MenuItem product) {
-    if (products.contains(product)) {
-      amounts.update(product.id!, (value) => value++);
+    if (amounts.keys.contains(product.id)) {
+      amounts.update(product.id!, (value) => value + product.amount!);
     } else {
       products.add(product);
-      amounts[product.id!] = 1;
+      amounts[product.id!] = product.amount!;
     }
   }
 
   void removeProductFromCart(MenuItem product) {
-    if (amounts[product.id!] == 1) {
-      products.remove(product);
-      amounts.remove(product.id);
-    } else {
-      amounts.update(product.id!, (value) => value--);
-    }
+    products.remove(product);
+    amounts.remove(product.id);
   }
 
   void clearCart() {
