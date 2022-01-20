@@ -35,26 +35,29 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
           body: Container(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: mainMenu == null
-              ? Container()
-              : Stack(
-                  children: [homeContent(), cartButton()],
-                ),
+        child: RefreshIndicator(
+          onRefresh: onRefresh,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: mainMenu == null
+                ? Container()
+                : Stack(
+                    children: [homeContent(), cartButton()],
+                  ),
+          ),
         ),
       )),
     );
   }
 
-  void loadMenu() {
-    Future.delayed(Duration.zero, () {
+  void loadMenu() async {
+    Future.delayed(Duration.zero, () async {
       LoadingDialog.show(context);
-    });
-    GetMenuService().getFullMenu().then((menu) {
-      Navigator.pop(context);
-      setState(() {
-        mainMenu = menu;
+      await GetMenuService().getFullMenu().then((menu) {
+        Navigator.pop(context);
+        setState(() {
+          mainMenu = menu;
+        });
       });
     });
   }
@@ -278,5 +281,11 @@ class _HomePageState extends State<HomePage> {
 
   openCart() {
     Navigator.pushNamed(context, "/cart").then((_) => setState(() {}));
+  }
+
+  Future<void> onRefresh() async {
+    setState(() {
+      loadMenu();
+    });
   }
 }
